@@ -88,3 +88,20 @@ Script completo para limpeza e otimização de máquinas Windows (ideal para VMs
 **Atenção:**
 - Desativa Firewall e Spooler
 - Executar como Administrador
+
+
+```markdown
+### 🛠️ Support Panel (GUI)
+Painel gráfico completo para suporte técnico.
+
+**Arquivo:**
+`support-panel.ps1`
+
+**Funcionalidades:**
+- Interface gráfica (GUI)
+- Diagnóstico de sistema
+- Ferramentas de rede
+- Limpeza e manutenção
+- Execução de SFC / DISM
+- Reset de Windows Update
+- Geração de logs
