@@ -66,3 +66,25 @@ Script para limpeza de arquivos temporários, logs e cache do Windows.
 - Remove cache do Windows Update
 - Esvazia a lixeira
 - Limpeza segura baseada em tempo (dias)
+
+
+### 🚀 Windows VM Optimizer
+Script completo para limpeza e otimização de máquinas Windows (ideal para VMs).
+
+**Arquivo:**
+`windows-vm-optimizer.ps1`
+
+**Funcionalidades:**
+- Limpeza de arquivos temporários
+- Limpeza de logs do sistema
+- Limpeza de cache de aplicações
+- Flush DNS
+- Otimização de disco
+- Limpeza do Windows Update
+- Remoção de hibernação
+- Desativação de serviços desnecessários
+- Ativação de plano Ultimate Performance
+
+**Atenção:**
+- Desativa Firewall e Spooler
+- Executar como Administrador
