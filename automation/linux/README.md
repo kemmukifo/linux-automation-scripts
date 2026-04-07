@@ -32,3 +32,29 @@ Este script automatiza todo o processo de integração com Active Directory, inc
 
 ```bash
 chmod +x domain_join.sh
+
+
+# 🐧 Linux Automation Scripts
+
+Coleção de scripts para automação, troubleshooting e administração de ambientes Linux.
+
+---
+
+## 📦 Scripts disponíveis
+
+### 👻 Ghost Process Detector
+Identifica processos que estão escutando portas mas não possuem conexões ativas.
+
+**Arquivo:**
+`ghost-process-detector.sh`
+
+**Funcionalidades:**
+- Detecta processos em LISTEN sem conexões ESTAB
+- Exibe porta, PID, nome do processo e aplicação
+- Permite encerrar processos manualmente
+- Kill seguro com fallback para kill -9
+
+**Uso:**
+```bash
+chmod +x ghost-process-detector.sh
+sudo ./ghost-process-detector.sh
