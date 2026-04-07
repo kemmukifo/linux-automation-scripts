@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerador de Comando RSYNC</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .comando {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        .pasta-item {
+            background: #e9ecef;
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .remover {
+            color: red;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 10px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        h2 {
+            color: #333;
+        }
+        .campo {
+            margin: 15px 0;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .dica {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔄 Gerador de Comando RSYNC</h2>
+        
+        <div class="info">
+            💡 <strong>Como funciona:</strong> O comando copia as pastas do <strong>seu computador (origem)</strong> 
+            para o <strong>servidor remoto (destino)</strong>
+        </div>
+        
+        <div class="campo">
+            <label>👤 Usuário no servidor remoto:</label>
+            <input type="text" id="usuario" placeholder="Ex: elawman" value="elawman">
+            <div class="dica">Usuário que tem acesso ao servidor remoto</div>
+        </div>
+        
+        <div class="campo">
+            <label>🌐 Endereço do SERVIDOR REMOTO (destino):</label>
+            <input type="text" id="servidor" placeholder="Ex: 172.30.1.80 ou meuservidor.com">
+            <div class="dica">⚠️ Para ONDE os arquivos serão enviados</div>
+        </div>
+        
+        <div class="campo">
+            <label>📂 Pasta de DESTINO no servidor remoto:</label>
+            <input type="text" id="destino" placeholder="Ex: /opt/ ou /home/usuario/backup/">
+            <div class="dica">Onde os arquivos serão salvos no servidor remoto</div>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>📁 Pastas de ORIGEM (do servidor de origem):</h3>
+            <div class="info">
+                💡 <strong>Pastas que estão no seu servidor</strong> e serão enviadas ao  outro servidor
+            </div>
+            <div id="listaPastas"></div>
+            <input type="text" id="novaPasta" placeholder="Ex: /opt/wildfly_canopus_task">
+            <button onclick="adicionarPasta()">+ Adicionar Pasta de Origem</button>
+        </div>
+        
+        <button onclick="gerarComando()">🚀 Gerar Comando RSYNC</button>
+        
+        <div id="resultado" style="display:none; margin-top: 30px;">
+            <h3>✅ Comando Gerado (copie e cole no terminal):</h3>
+            <div class="comando" id="comandoGerado"></div>
+            <button onclick="copiarComando()">📋 Copiar Comando</button>
+        </div>
+    </div>
+
+    <script>
+        let pastas = [];
+        
+        function atualizarLista() {
+            const listaDiv = document.getElementById('listaPastas');
+            if (pastas.length === 0) {
+                listaDiv.innerHTML = '<p style="color: #999;">Nenhuma pasta adicionada</p>';
+                return;
+            }
+            
+            pastas.forEach((pasta, index) => {
+                const div = document.createElement('div');
+                div.className = 'pasta-item';
+                div.innerHTML = `
+                    <span>📁 ${pasta}</span>
+                    <span class="remover" onclick="removerPasta(${index})">✖</span>
+                `;
+                listaDiv.appendChild(div);
+            });
+        }
+        
+        function adicionarPasta() {
+            const input = document.getElementById('novaPasta');
+            const pasta = input.value.trim();
+            if (pasta) {
+                pastas.push(pasta);
+                input.value = '';
+                atualizarLista();
+                document.getElementById('resultado').style.display = 'none';
+            } else {
+                alert('Digite o caminho completo da pasta!');
+            }
+        }
+        
+        function removerPasta(index) {
+            pastas.splice(index, 1);
+        
+        function gerarComando() {
+            const usuario = document.getElementById('usuario').value || 'elawman';
+            const servidor = document.getElementById('servidor').value;
+            const destino = document.getElementById('destino').value;
+            
+            if (!servidor) {
+            if (!destino) {
+                alert('❌ Por favor, informe a pasta de DESTINO no servidor remoto!');
+                return;
+            }
+            if (pastas.length === 0) {
+                alert('❌ Por favor, adicione pelo menos uma pasta de ORIGEM!');
+                return;
+            }
+            
+            let comando = 'rsync -avz --progress \\\n';
+            pastas.forEach(pasta => {
+                comando += `  ${pasta} \\\n`;
+            });
+            comando += `  ${usuario}@${servidor}:${destino}`;
+            
+            document.getElementById('comandoGerado').textContent = comando;
+            document.getElementById('resultado').style.display = 'block';
+        }
+        
+        function copiarComando() {
+            const comando = document.getElementById('comandoGerado').textContent;
+            navigator.clipboard.writeText(comando).then(() => {
+                alert('✅ Comando copiado para área de transferência!');
+            });
+        }
+        
+        // Permitir adicionar com Enter
+        document.getElementById('novaPasta').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                adicionarPasta();
+            }
+        });
+    </script>
+</body>
+</html>                alert('❌ Por favor, informe o endereço do SERVIDOR REMOTO (para onde enviar)!');
+                return;
+            }
+            atualizarLista();
+            document.getElementById('resultado').style.display = 'none';
+        }
+
